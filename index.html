@@ -27,19 +27,13 @@
             <button class="btn btn-default" @click="downloadLatestApk">安装最新的包</button>
         </div>
 
-        <div v-if="downloadingApk">
-            正在下载APK....
-            <mt-progress :value="downloadProgress" :bar-height="10"></mt-progress>
+        <div id="download-box">
+            <span id="download-tip">正在下载APK....</span>
+            <mt-progress id="download-progress" :value="downloadProgress" :bar-height="10"></mt-progress>
         </div>
 
         <div v-if="screencap">
             <img id="screencap" v-on:contextmenu="aboutScreenCap" :src="screencap"/>
-        </div>
-
-        <div class="alert alert-danger alert-dismissible fade in" role="alert">
-            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-            <h4>你必须选一个设备</h4>
-            <p>如果你不选设备, 我怎么知道你要操作哪个设备呢? 默认已经给你选了, 如果没选, 肯定是因为你的线没有连接好! </p>
         </div>
     </div>
 </div>

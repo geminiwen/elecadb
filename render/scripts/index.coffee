@@ -1,20 +1,19 @@
-$ = require 'jquery'
-window.jQuery = $
-require('./../../assets/javascript/bootstrap.min')
-
+window.jQuery = $ = require 'jquery'
+require './../../assets/javascript/bootstrap.min'
 mintUI = require './../../assets/javascript/mint-ui'
 Vue = require './../../assets/javascript/vue'
-Indicator = mintUI.Indicator
+{Indicator, MessageBox} = mintUI
 {remote} = require 'electron'
 fs = require 'fs'
+Progress = require 'progress-stream'
 Promise = require 'bluebird'
-progress = require 'request-progress'
+
+
 {Menu, MenuItem, dialog, nativeImage} = remote
 temp = require 'temp'
 
 ipc = require('electron').ipcRenderer
 debug = require('debug') 'render'
-request = require 'request'
 
 document.addEventListener "DOMContentLoaded", =>
     Vue.use mintUI
@@ -22,38 +21,23 @@ document.addEventListener "DOMContentLoaded", =>
     data =
         devices: [],
         screencap: undefined,
-        downloadingApk: false
         downloadProgress: 0
 
     capture = =>
         id = $('.device.selected').data 'device'
-        if id is no
-            $('.alert').show()
+        if !id
+            MessageBox 'FBI Warning', '你没有选择设备或者设备没有连接好!'
         else
             ipc.send 'request-screencap', id
             Indicator.open()
 
     downloadLatestApk = =>
-        data.screencap = false
-        data.downloadingApk = true
         data.downloadProgress = 0
-        downloadTask()
+        $('#download-box').show()
+        $('#download-tip').text '正在下载...'
 
-    downloadTask = ->
-        privateToken = 'VFuvYLhMUZgpp-sK_Ej6'
+        ipc.send 'request-downloadApk'
 
-        progress request({
-            url: 'http://10.0.10.211:9001/api/v3/projects/15/builds/artifacts/develop/download?job=publish',
-            headers:
-                'PRIVATE-TOKEN': privateToken
-            })
-        .on 'progress', (state) ->
-            console.log state
-            progress = state.percent
-            data.downloadProgress = progress * 100
-        .on 'end', ->
-            data.downloadProgress = 100
-        .pipe fs.createWriteStream("/tmp/a.zip")
 
     app = new Vue
         el: "#app"

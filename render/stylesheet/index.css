@@ -74,12 +74,6 @@ li {
     margin: .1rem 0;
 }
 
-/* alert */
-.content .alert {
+#download-box {
     display: none;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
 }
-/* end of alert */
