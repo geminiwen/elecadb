@@ -1,0 +1,46 @@
+<html lang="zh-CN" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="./render/stylesheet/variable.css"/>
+    <link rel="stylesheet" href="./render/stylesheet/global.css"/>
+    <link rel="stylesheet" href="./render/stylesheet/index.css"/>
+    <link rel="stylesheet" href="./assets/stylesheet/bootstrap.min.css"/>
+    <link rel="stylesheet" href="./assets/stylesheet/mint-ui.css"/>
+
+</head>
+<body>
+<div id="app">
+    <nav class="nav">
+        <div v-if="(devices.length)">
+            <h5>找到如下设备</h5>
+            <ul>
+                <li v-bind:class="{ device: true, selected: index == 0 }" v-for="(device, index) in devices" :data-device="device.id" @click="switchDevice">{{ device.brand + ' ' + device.name }}</li>
+            </ul>
+        </div>
+        <div v-else>
+            <h5>没有找到设备, 请检查手机连接</h5>
+        </div>
+    </nav>
+    <div class="content is-shown">
+        <div class="btn-group toolbar ">
+            <button class="btn btn-default" @click="capture">截图</button>
+            <button class="btn btn-default" @click="downloadFromFir">安装最新的包</button>
+        </div>
+        <div v-if="screencap">
+            <img id="screencap" :src="screencap"/>
+        </div>
+
+        <div class="alert alert-danger alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+            <h4>你必须选一个设备</h4>
+            <p>如果你不选设备, 我怎么知道你要操作哪个设备呢? 默认已经给你选了, 如果没选, 肯定是因为你的线没有连接好! </p>
+        </div>
+    </div>
+</div>
+<script>require('electron-connect').client.create()</script>
+<script type="text/javascript">
+    require('coffee-script').register();
+    require("./render/scripts/index");
+</script>
+</body>
+</html>
