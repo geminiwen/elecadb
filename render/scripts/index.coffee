@@ -5,15 +5,14 @@ Vue = require './../../assets/javascript/vue'
 {Indicator, MessageBox} = mintUI
 {remote} = require 'electron'
 fs = require 'fs'
-Progress = require 'progress-stream'
 Promise = require 'bluebird'
-
-
+Progress = require 'progress-stream'
 {Menu, MenuItem, dialog, nativeImage} = remote
 temp = require 'temp'
 
 ipc = require('electron').ipcRenderer
 debug = require('debug') 'render'
+request = require 'request'
 
 document.addEventListener "DOMContentLoaded", =>
     Vue.use mintUI
@@ -36,8 +35,29 @@ document.addEventListener "DOMContentLoaded", =>
         $('#download-box').show()
         $('#download-tip').text '正在下载...'
 
-        ipc.send 'request-downloadApk'
+        privateToken = 'VFuvYLhMUZgpp-sK_Ej6'
+        progress = Progress {time: 100}
+        .on 'progress', (state) ->
+            data.downloadProgress = state.percentage
+        .on 'error', (err) ->
+            console.error err
+            MessageBox 'FBI Warning', '下载失败,请检查网络'
+        .on 'end', ->
+            $('#download-tip').text '下载完成'
+            data.downloadProgress = 100
 
+        request.get
+            url: 'http://10.0.10.211:9001/api/v3/projects/15/builds/artifacts/develop/download?job=publish',
+            headers:
+                'PRIVATE-TOKEN': privateToken
+        .on 'response', (res) ->
+            #TODO: deal with statusCode
+            progress.setLength parseInt(res.headers['content-length'])
+        .on 'error', (err) ->
+            console.error err
+            MessageBox 'FBI Warning', '下载失败,请检查网络'
+        .pipe progress
+        .pipe fs.createWriteStream("/tmp/a.zip")
 
     app = new Vue
         el: "#app"

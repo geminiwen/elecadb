@@ -17,7 +17,6 @@
     "mint-ui": "^2.0.6",
     "progress-stream": "^1.2.0",
     "request": "^2.79.0",
-    "request-progress": "^3.0.0",
     "request-promise": "^4.1.1",
     "temp": "^0.8.3",
     "vue": "^2.1.6"
