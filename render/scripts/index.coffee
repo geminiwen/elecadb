@@ -36,6 +36,8 @@ document.addEventListener "DOMContentLoaded", =>
         $('#download-tip').text '正在下载...'
 
         privateToken = 'VFuvYLhMUZgpp-sK_Ej6'
+        projectId = 15
+
         progress = Progress {time: 100}
         .on 'progress', (state) ->
             data.downloadProgress = state.percentage
@@ -48,7 +50,7 @@ document.addEventListener "DOMContentLoaded", =>
             data.downloadProgress = 100
 
         request.get
-            url: 'http://10.0.10.211:9001/api/v3/projects/15/builds/artifacts/develop/download?job=publish',
+            url: "http://10.0.10.211:9001/api/v3/projects/#{projectId}/builds/artifacts/develop/download?job=publish",
             headers:
                 'PRIVATE-TOKEN': privateToken
         .on 'response', (res) ->
