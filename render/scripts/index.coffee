@@ -41,6 +41,7 @@ document.addEventListener "DOMContentLoaded", =>
             data.downloadProgress = state.percentage
         .on 'error', (err) ->
             console.error err
+            $('#download-box').hide()
             MessageBox 'FBI Warning', '下载失败,请检查网络'
         .on 'end', ->
             $('#download-tip').text '下载完成'
@@ -55,6 +56,7 @@ document.addEventListener "DOMContentLoaded", =>
             progress.setLength parseInt(res.headers['content-length'])
         .on 'error', (err) ->
             console.error err
+            $('#download-box').hide()
             MessageBox 'FBI Warning', '下载失败,请检查网络'
         .pipe progress
         .pipe fs.createWriteStream("/tmp/a.zip")
