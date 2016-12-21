@@ -1,6 +1,6 @@
 {
   "name": "node-adb",
-  "version": "1.0.0",
+  "version": "0.1 beta",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -12,13 +12,16 @@
   "dependencies": {
     "adbkit": "^2.7.0",
     "debug": "^2.4.5",
-    "electron": "^1.4.12",
     "jquery": "^3.1.1",
     "mint-ui": "^2.0.6",
+    "request": "^2.79.0",
+    "request-progress": "^3.0.0",
+    "request-promise": "^4.1.1",
     "temp": "^0.8.3"
   },
   "devDependencies": {
     "electron-connect": "^0.6.1",
+    "electron": "^1.4.12",
     "gulp": "^3.9.1"
   }
 }

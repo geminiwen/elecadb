@@ -1,4 +1,4 @@
-<html lang="zh-CN" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<html lang="zh-CN" xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="./render/stylesheet/variable.css"/>
@@ -22,12 +22,18 @@
         </div>
     </nav>
     <div class="content is-shown">
-        <div class="btn-group toolbar ">
+        <div class="toolbar">
             <button class="btn btn-default" @click="capture">截图</button>
-            <button class="btn btn-default" @click="downloadFromFir">安装最新的包</button>
+            <button class="btn btn-default" @click="downloadLatestApk">安装最新的包</button>
         </div>
+
+        <div v-if="downloadingApk">
+            正在下载APK....
+            <mt-progress :value="downloadProgress" :bar-height="10"></mt-progress>
+        </div>
+
         <div v-if="screencap">
-            <img id="screencap" :src="screencap"/>
+            <img id="screencap" v-on:contextmenu="aboutScreenCap" :src="screencap"/>
         </div>
 
         <div class="alert alert-danger alert-dismissible fade in" role="alert">

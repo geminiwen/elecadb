@@ -8,7 +8,7 @@ gulp.task 'serve', =>
     electron.start()
 
     # Restart browser process
-    gulp.watch ['adb.coffee', 'index.js'], electron.restart
+    gulp.watch ['adb.coffee', 'main_process/*.coffee', 'index.js'], electron.restart
 
     # Reload renderer process
     gulp.watch ['render/scripts/*.coffee',
