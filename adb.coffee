@@ -58,4 +58,11 @@ class ADB
         .catch (ex) =>
             debug ex
 
+    installApk: (event, deviceId, path) =>
+        client.install(deviceId, path)
+        .then ->
+            event.sender.send 'installApk'
+        .catch (e) ->
+            event.sender.send 'installApk', e
+
 module.exports = exports = ADB;
