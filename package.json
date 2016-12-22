@@ -1,5 +1,5 @@
 {
-  "name": "elecadb",
+  "name": "Elecadb",
   "version": "0.1.0",
   "description": "An adb tool based on Electron",
   "main": "index.js",
@@ -19,11 +19,12 @@
     "request": "^2.79.0",
     "request-promise": "^4.1.1",
     "temp": "^0.8.3",
+    "unzip": "^0.1.11",
+    "electron": "^1.4.12",
     "vue": "^2.1.6"
   },
   "devDependencies": {
     "electron-connect": "^0.6.1",
-    "electron": "^1.4.12",
     "gulp": "^3.9.1"
   }
 }

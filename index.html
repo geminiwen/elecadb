@@ -37,7 +37,11 @@
         </div>
     </div>
 </div>
-<script>require('electron-connect').client.create()</script>
+<script>
+    if (process.env.NODE_ENV !== 'production') {
+        require('electron-connect').client.create()
+    }
+</script>
 <script type="text/javascript">
     require('coffee-script').register();
     require("./render/scripts/index");

@@ -26,6 +26,7 @@ class Services
             filters: [{ name: 'Images', extensions: ['png'] }]
         }
         dialog.showSaveDialog options, (fileName) ->
+            if !fileName then return
             image = nativeImage.createFromDataURL dataUrl
             fs.createWriteStream(fileName).write image.toPNG(), (err) ->
                 event.sender.send('saveImage', err);
