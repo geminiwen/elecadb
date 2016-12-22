@@ -1,7 +1,6 @@
-window.jQuery = $ = require 'jquery'
-require './../../assets/javascript/bootstrap.min'
-mintUI = require './../../assets/javascript/mint-ui'
-Vue = require './../../assets/javascript/vue'
+$ = require 'jquery'
+mintUI = require 'mint-ui'
+Vue = require 'vue'
 fs = require 'fs'
 Promise = require 'bluebird'
 Progress = require 'progress-stream'
@@ -32,7 +31,6 @@ document.addEventListener "DOMContentLoaded", =>
         if !id
             MessageBox 'FBI Warning', '你没有选择设备或者设备没有连接好!'
             return
-
         ipc.send 'request-screencap', id
         Indicator.open()
 
@@ -82,7 +80,7 @@ document.addEventListener "DOMContentLoaded", =>
                 headers:
                     'PRIVATE-TOKEN': privateToken
             .on 'response', (res) ->
-                #TODO: deal with statusCode
+#TODO: deal with statusCode
                 progress.setLength parseInt(res.headers['content-length'])
             .on 'error', (err) ->
                 reject err
@@ -110,16 +108,20 @@ document.addEventListener "DOMContentLoaded", =>
                 ipc.send 'request-saveImage', dataUrl
 
         created: =>
-            # `this` points to the vm instance
+# `this` points to the vm instance
+            $('#app').css('display', 'flex')
             ipc.send 'request-devices'
 
 
     ipc.on 'devices', (event, devices) =>
         data.devices = devices
 
-    ipc.on 'screencap', (event, image) =>
-        data.screencap = image;
+    ipc.on 'screencap', (event, err, image) =>
         Indicator.close()
+        if err
+            alert '截图失败'
+            return
+        data.screencap = image;
 
     ipc.on 'saveImage', (event, err) =>
         if err then alert '保存失败' else alert '保存成功'

@@ -1,4 +1,4 @@
-ADB = require '../adb'
+ADB = require './adb'
 fs = require "fs"
 Progress = require 'progress-stream'
 

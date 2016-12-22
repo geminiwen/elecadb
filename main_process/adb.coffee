@@ -54,9 +54,9 @@ class ADB
         .then adb.util.readAll
         .then (output) =>
             image = nativeImage.createFromBuffer output
-            event.sender.send "screencap", image.toDataURL()
+            event.sender.send "screencap", undefined , image.toDataURL()
         .catch (ex) =>
-            debug ex
+            event.sender.send "screencap", ex
 
     installApk: (event, deviceId, path) =>
         client.install(deviceId, path)
