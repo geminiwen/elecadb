@@ -15,8 +15,8 @@
         </nav>
         <div class="content is-shown">
             <div class="toolbar">
-                <button class="btn btn-default" @click="capture">截图</button>
-                <button class="btn btn-default" >安装最新的包</button>
+                <mt-button size="small" @click="capture" :disabled="screenRecording">截图</mt-button>
+                <mt-button size="small" @click="dowloadApk" :disabled="installing">安装最新的APK</mt-button>
             </div>
 
             <div id="download-box">
@@ -35,7 +35,12 @@
     import fs from 'fs'
     import {ipcRenderer as ipc} from 'electron'
     import * as $ from 'jquery'
-    import {Progress, MessageBox, Indicator} from 'mint-ui'
+    import {Progress, MessageBox, Indicator, Button} from 'mint-ui'
+    import progress from 'progress-stream'
+    import Temp from 'temp'
+    import Promise from 'bluebird'
+    import path from 'path'
+    import request from 'request'
 
     export default {
         name: 'app',
@@ -43,11 +48,14 @@
             return {
                 devices: [],
                 screencap: undefined,
-                downloadProgress: 0
+                downloadProgress: 0,
+                screenRecording: false,
+                installing: false
             }
         },
         components: {
-            'mt-progress': Progress
+            'mt-progress': Progress,
+            'mt-button': Button
         },
         methods: {
             capture() {
@@ -56,12 +64,14 @@
                     MessageBox('FBI Warning', '你没有选择设备或者设备没有连接好!')
                     return;
                 }
+                this.screenRecording = true;
                 ipc.send('request-screencap', id)
                 Indicator.open();
                 ipc.on('screencap', (event, err, image) => {
                     Indicator.close()
+                    this.screenRecording = false;
                     if(err) {
-                        alert('截图失败');
+                        MessageBox('FBI Warning', '截图失败')
                         return;
                     }
                     this.screencap = image;
@@ -70,6 +80,57 @@
             saveScreencap() {
                 let dataUrl = $(event.target).attr('src')
                 ipc.send('request-saveImage', dataUrl)
+            },
+            dowloadApk() {
+                let id = $('.device.selected').data('device')
+                if (!id) {
+                    MessageBox('FBI Warning', '你没有选择设备或者设备没有连接好!')
+                    return;
+                }
+                this.dataProgress = 0;
+                this.installing = true;
+                $('#download-box').show()
+                $('#download-tip').text('正在下载...')
+                
+                ipc.send('request-downloadApk');
+
+
+                ipc.on('downloadApk', (event, err, subEvent, data) => {
+                    if (err) {
+                        this.installing = false;
+                        $('#download-box').hide();
+                        ipc.removeAllListeners('downloadApk');
+                        MessageBox('FBI Warning', '下载失败,请检查网络')
+                        return;
+                    }
+                    
+                    if (subEvent == 'progress') {
+                        this.downloadProgress = data;   
+                    } else if (subEvent == 'complete') {
+                        ipc.removeAllListeners('downloadApk');
+                        $('#download-tip').text('下载完成')
+                        this.downloadProgress = 100;
+                        ipc.send('request-installApk', id, data)
+                        Indicator.open()
+
+                        ipc.on('installApk', (event, err) => {
+                             this.downloadProgress = 0;
+                            ipc.removeAllListeners('installApk');
+                            Indicator.close();
+                            $('#download-box').hide();
+                            this.installing = false;
+                                
+                            if (err) {
+                                MessageBox('FBI Warning', '安装失败');
+                                return;
+                            }
+                            MessageBox('恭喜你', '安装成功啦！')
+                        })
+                    }
+                });
+
+               
+                
             }
         },
         mounted() {
@@ -80,3 +141,4 @@
         }
     }
 </script>
+

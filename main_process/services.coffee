@@ -19,6 +19,7 @@ class Services
         ipcMain.on 'request-screencap', @adb.screenCap
         ipcMain.on 'request-saveImage', this.saveImage
         ipcMain.on 'request-installApk', @adb.installApk
+        ipcMain.on 'request-downloadApk', @adb.downloadApk
 
     saveImage: (event, dataUrl) ->
         options = {

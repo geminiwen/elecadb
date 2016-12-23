@@ -1,5 +1,4 @@
 require('coffee-script').register();
-require('./main_process/main-menu')
 
 let {app, BrowserWindow} = require('electron')
 const path = require('path')
