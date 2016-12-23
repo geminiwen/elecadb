@@ -15,17 +15,17 @@ function createWindow() {
     mainWindow = new BrowserWindow({width: 800, height: 600, resizable: false, title: 'Elecadb ' + app.getVersion()})
 
     // and load the index.html of the app.
-    // mainWindow.loadURL(url.format({
-    //     pathname: path.join(__dirname, '/render/index.html'),
-    //     protocol: 'http:',
-    //     slashes: true
-    // }));
-    mainWindow.loadURL('http://localhost:8080/index.html')
+    mainWindow.loadURL(url.format({
+        pathname: path.join(__dirname, '/render/index.html'),
+        protocol: 'file:',
+        slashes: true
+    }));
+    // mainWindow.loadURL('http://localhost:8080/index.html')
 
     new Services(mainWindow)
 
     // Open the DevTools.
-    mainWindow.webContents.openDevTools()
+    // mainWindow.webContents.openDevTools()
 
     // Emitted when the window is closed.
     mainWindow.on('closed', function () {

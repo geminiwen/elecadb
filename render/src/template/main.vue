@@ -17,6 +17,7 @@
             <div class="toolbar">
                 <mt-button size="small" @click="capture" :disabled="screenRecording">截图</mt-button>
                 <mt-button size="small" @click="dowloadApk" :disabled="installing">安装最新的APK</mt-button>
+                <mt-button size="small" @click="startDebugActivity" :disabled="installing">启动集成开发环境</mt-button>
             </div>
 
             <div id="download-box">
@@ -128,9 +129,23 @@
                         })
                     }
                 });
-
-               
-                
+            },
+            startDebugActivity() {
+                let id = $('.device.selected').data('device')
+                if (!id) {
+                    MessageBox('FBI Warning', '你没有选择设备或者设备没有连接好!')
+                    return;
+                }
+                ipc.send('request-launch', id);
+                Indicator.open();
+                ipc.on('launch', (event, err) => {
+                    ipc.removeAllListeners('launch');
+                    Indicator.close();
+                    if (err) {
+                        MessageBox('FBI Warning', '启动失败');
+                        return;
+                    }
+                })
             }
         },
         mounted() {

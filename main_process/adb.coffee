@@ -114,5 +114,20 @@ class ADB
             event.sender.send 'installApk'
         .catch (e) ->
             event.sender.send 'installApk', e
+    launch: (event, id) ->
+        options = {
+            'component': 'com.segmentfault.app/com.segmentfault.app.activity.MainActivity',
+            'extras': [{
+                key: 'API_LEVEL'
+                type: 'int'
+                value: '1'
+            }]
+        }
+        client.startActivity id, options
+        .then ->
+            event.sender.send 'launch'
+        .catch (e) ->
+            debug e
+            event.sender.send 'launch', e
 
 module.exports = exports = ADB;

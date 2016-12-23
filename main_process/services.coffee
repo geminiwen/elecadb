@@ -20,6 +20,7 @@ class Services
         ipcMain.on 'request-saveImage', this.saveImage
         ipcMain.on 'request-installApk', @adb.installApk
         ipcMain.on 'request-downloadApk', @adb.downloadApk
+        ipcMain.on 'request-launch', @adb.launch
 
     saveImage: (event, dataUrl) ->
         options = {
@@ -31,6 +32,7 @@ class Services
             image = nativeImage.createFromDataURL dataUrl
             fs.createWriteStream(fileName).write image.toPNG(), (err) ->
                 event.sender.send('saveImage', err);
+    
 
        
 
