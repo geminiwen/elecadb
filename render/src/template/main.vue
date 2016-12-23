@@ -25,7 +25,7 @@
             </div>
 
             <div v-if="screencap">
-                <img id="screencap" v-on:contextmenu="aboutScreenCap" :src="screencap"/>
+                <img id="screencap" v-on:contextmenu="saveScreencap" :src="screencap"/>
             </div>
         </div>
     </div>
@@ -35,7 +35,7 @@
     import fs from 'fs'
     import {ipcRenderer as ipc} from 'electron'
     import * as $ from 'jquery'
-    import {Progress, MessageBox} from 'mint-ui'
+    import {Progress, MessageBox, Indicator} from 'mint-ui'
 
     export default {
         name: 'app',
@@ -52,7 +52,24 @@
         methods: {
             capture() {
                 let id = $('.device.selected').data('device')
-                MessageBox('FBI Warning', '你没有选择设备或者设备没有连接好!')
+                if (!id) {
+                    MessageBox('FBI Warning', '你没有选择设备或者设备没有连接好!')
+                    return;
+                }
+                ipc.send('request-screencap', id)
+                Indicator.open();
+                ipc.on('screencap', (event, err, image) => {
+                    Indicator.close()
+                    if(err) {
+                        alert('截图失败');
+                        return;
+                    }
+                    this.screencap = image;
+                });
+            },
+            saveScreencap() {
+                let dataUrl = $(event.target).attr('src')
+                ipc.send('request-saveImage', dataUrl)
             }
         },
         mounted() {

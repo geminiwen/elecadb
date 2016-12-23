@@ -108,7 +108,7 @@ document.addEventListener "DOMContentLoaded", =>
                 ipc.send 'request-saveImage', dataUrl
 
         created: =>
-# `this` points to the vm instance
+            # `this` points to the vm instance
             $('#app').css('display', 'flex')
             ipc.send 'request-devices'
 
