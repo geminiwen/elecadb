@@ -22,12 +22,12 @@ class Services
         ipcMain.on 'request-downloadApk', @adb.downloadApk
         ipcMain.on 'request-launch', @adb.launch
 
-    saveImage: (event, dataUrl) ->
+    saveImage: (event, dataUrl) =>
         options = {
             title: 'Save an Image',
             filters: [{ name: 'Images', extensions: ['png'] }]
         }
-        dialog.showSaveDialog options, (fileName) ->
+        dialog.showSaveDialog @win, options, (fileName) ->
             if !fileName then return
             image = nativeImage.createFromDataURL dataUrl
             fs.createWriteStream(fileName).write image.toPNG(), (err) ->
