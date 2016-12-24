@@ -27,7 +27,6 @@ parseDevices = (devices) ->
             return device
 
 
-
 class ADB
     constructor: (@win) ->
         this.track()
@@ -70,7 +69,7 @@ class ADB
             # progress
             event.sender.send 'downloadApk', undefined, 'progress', state.percentage
         .on 'error', (err) ->
-            console.error err
+            debug err
             event.sender.send 'downloadApk', err
         .on 'end', ->
             # end
@@ -84,7 +83,7 @@ class ADB
             event.sender.send 'downloadApk', undefined, 'complete', apkPath
         .catch (err) ->
             # error
-            console.error err
+            debug err
             event.sender.send 'downloadApk', err
 
     _realDownloadApk: (dirPath, progress) =>
@@ -98,6 +97,8 @@ class ADB
                     'PRIVATE-TOKEN': privateToken
             .on 'response', (res) ->
                 #TODO: deal with statusCode
+                if res.statusCode >= 400
+                    reject Error('download failed')
                 progress.setLength parseInt(res.headers['content-length'])
             .on 'error', (err) ->
                 reject err

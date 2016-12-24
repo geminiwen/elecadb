@@ -15,9 +15,9 @@
         </nav>
         <div class="content is-shown">
             <div class="toolbar">
-                <mt-button size="small" @click="capture" :disabled="screenRecording">截图</mt-button>
-                <mt-button size="small" @click="dowloadApk" :disabled="installing">安装最新的APK</mt-button>
-                <mt-button size="small" @click="startDebugActivity" :disabled="installing">启动集成开发环境</mt-button>
+                <mt-button size="small" @click="capture" :disabled="working">截图</mt-button>
+                <mt-button size="small" @click="dowloadApk" :disabled="working">安装最新的APK</mt-button>
+                <mt-button size="small" @click="startDebugActivity" :disabled="working">启动集成开发环境</mt-button>
             </div>
 
             <div id="download-box">
@@ -50,8 +50,7 @@
                 devices: [],
                 screencap: undefined,
                 downloadProgress: 0,
-                screenRecording: false,
-                installing: false
+                working: false
             }
         },
         components: {
@@ -65,12 +64,12 @@
                     MessageBox('FBI Warning', '你没有选择设备或者设备没有连接好!')
                     return;
                 }
-                this.screenRecording = true;
+                this.working = true;
                 ipc.send('request-screencap', id)
                 Indicator.open();
                 ipc.on('screencap', (event, err, image) => {
                     Indicator.close()
-                    this.screenRecording = false;
+                    this.working = false;
                     if(err) {
                         MessageBox('FBI Warning', '截图失败')
                         return;
@@ -88,8 +87,9 @@
                     MessageBox('FBI Warning', '你没有选择设备或者设备没有连接好!')
                     return;
                 }
+                this.screencap = undefined;
                 this.dataProgress = 0;
-                this.installing = true;
+                this.working = true;
                 $('#download-box').show()
                 $('#download-tip').text('正在下载...')
                 
@@ -98,8 +98,9 @@
 
                 ipc.on('downloadApk', (event, err, subEvent, data) => {
                     if (err) {
-                        this.installing = false;
+                        this.working = false;
                         $('#download-box').hide();
+                        this.dataProgress = 0;
                         ipc.removeAllListeners('downloadApk');
                         MessageBox('FBI Warning', '下载失败,请检查网络')
                         return;
@@ -119,7 +120,7 @@
                             ipc.removeAllListeners('installApk');
                             Indicator.close();
                             $('#download-box').hide();
-                            this.installing = false;
+                            this.working = false;
                                 
                             if (err) {
                                 MessageBox('FBI Warning', '安装失败');
