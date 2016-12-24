@@ -1,6 +1,7 @@
 <template xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
     <div id="app">
         <nav class="nav">
+            <div class="titlebar"></div>
             <div v-if="devices.length">
                 <h5>找到如下设备</h5>
                 <ul>
@@ -14,19 +15,22 @@
             </div>
         </nav>
         <div class="content is-shown">
-            <div class="toolbar">
-                <mt-button size="small" @click="capture" :disabled="working">截图</mt-button>
-                <mt-button size="small" @click="dowloadApk" :disabled="working">安装最新的APK</mt-button>
-                <mt-button size="small" @click="startDebugActivity" :disabled="working">启动集成开发环境</mt-button>
-            </div>
+            <div class="titlebar">Elecadb</div>
+            <div class="content-container">
+                <div class="toolbar">
+                    <mt-button size="small" @click="capture" :disabled="working">截图</mt-button>
+                    <mt-button size="small" @click="dowloadApk" :disabled="working">安装最新的APK</mt-button>
+                    <mt-button size="small" @click="startDebugActivity" :disabled="working">启动集成开发环境</mt-button>
+                </div>
 
-            <div id="download-box">
-                <span id="download-tip">正在下载APK....</span>
-                <mt-progress id="download-progress" :value="downloadProgress" :bar-height="10"></mt-progress>
-            </div>
+                <div id="download-box">
+                    <span id="download-tip">正在下载APK....</span>
+                    <mt-progress id="download-progress" :value="downloadProgress" :bar-height="10"></mt-progress>
+                </div>
 
-            <div v-if="screencap">
-                <img id="screencap" v-on:contextmenu="saveScreencap" :src="screencap"/>
+                <div v-if="screencap">
+                    <img id="screencap" v-on:contextmenu="saveScreencap" :src="screencap"/>
+                </div>
             </div>
         </div>
     </div>

@@ -7,6 +7,13 @@ body {
     margin: 0 auto;
 }
 
+.titlebar {
+    height: 25px;
+    line-height: 25px;
+    color: #999;
+    -webkit-app-region: drag;
+}
+
 #app {
     display: flex;
     height: 100%;
@@ -62,8 +69,15 @@ li {
 }
 
 .content {
-    padding: 1rem;
     text-align: center;
+}
+
+button {
+    cursor:pointer;
+}
+
+.content-container {
+    padding: 1rem;
 }
 
 .toolbar {

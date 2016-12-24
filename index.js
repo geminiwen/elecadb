@@ -12,7 +12,11 @@ let mainWindow
 
 function createWindow() {
     // Create the browser window.
-    mainWindow = new BrowserWindow({width: 800, height: 600, resizable: false, title: 'Elecadb ' + app.getVersion()})
+    mainWindow = new BrowserWindow({width: 800, 
+        height: 600, 
+        title: 'Elecadb ' + app.getVersion(),
+        titleBarStyle: 'hidden'
+    })
 
     // and load the index.html of the app.
     var indexPath = process.env.NODE_ENV === 'development' ? '/render/index.html' : '/render/index.html'

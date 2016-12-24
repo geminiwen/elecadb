@@ -10,10 +10,12 @@ electron = require('electron-connect').server.create()
 devCompiler = webpack webpackConfig
 
 gulp.task 'webpack:build', (callback) ->
+
     devCompiler.run (err, status) ->
         #TODO deal with err and status
         throw new gutil.PluginError('webpack:build', err) if err?
         gutil.log '[webpack:build]', status.toString({colors: true});
+        console.log "finish build"
         callback()
 
 gulp.task 'watch', ['webpack:build'], =>
@@ -23,9 +25,8 @@ gulp.task 'watch', ['webpack:build'], =>
 
     # Restart browser process
     gulp.watch ['main_process/*.coffee', 'index.js'], electron.restart
-    gulp.watch ['render/src/**/*.{css,js,vue}', 
-                'render/*.html']
-    , ['webpack:build'], electron.reload
+    gulp.watch ['render/src/**/*.{css,js,vue}'], ['webpack:build']
+    gulp.watch ['render/dist/*.js', 'render/index.html'], electron.reload
 
 
 gulp.task 'default', ['watch']
