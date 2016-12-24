@@ -6,8 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "DEBUG=* electron .",
-    "dev": "cross-env NODE_ENV=development webpack-dev-server --content-base render/ --open --inline --hot",
-    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
+    "dev": "cross-env NODE_ENV=development gulp",
+    "build": "cross-env NODE_ENV=production gulp webpack:build"
   },
   "author": "",
   "license": "ISC",
@@ -37,6 +37,8 @@
     "electron-connect": "^0.6.1",
     "file-loader": "^0.9.0",
     "gulp": "^3.9.1",
+    "gulp-useref": "^3.1.2",
+    "gulp-util": "^3.0.7",
     "vue-loader": "^10.0.2",
     "vue-template-compiler": "^2.1.0",
     "webpack": "^2.1.0-beta.25",
