@@ -12,7 +12,48 @@ template = [{
                 title: 'Settings'
             })
     }]
-}]
+},
+    {
+        label: 'View',
+        submenu: [
+            {
+                role: 'reload'
+            },
+            {
+                role: 'toggledevtools'
+            },
+            {
+                type: 'separator'
+            },
+            {
+                role: 'resetzoom'
+            },
+            {
+                role: 'zoomin'
+            },
+            {
+                role: 'zoomout'
+            },
+            {
+                type: 'separator'
+            },
+            {
+                role: 'togglefullscreen'
+            }
+        ]
+    },
+    {
+        role: 'window',
+        submenu: [
+            {
+                role: 'minimize'
+            },
+            {
+                role: 'close'
+            }
+        ]
+    },
+]
 
 app.on 'ready', ->
     menu = Menu.buildFromTemplate template

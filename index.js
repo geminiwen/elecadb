@@ -4,6 +4,7 @@ let {app, BrowserWindow} = require('electron')
 const path = require('path')
 const url = require('url')
 const Services = require('./main_process/services')
+require("./main_process/main-menu")
 
 
 // Keep a global reference of the window object, if you don't, the window will
