@@ -1,7 +1,6 @@
 <template xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
     <div id="app">
         <nav class="nav">
-            <div class="titlebar"></div>
             <div v-if="devices.length">
                 <h5>找到如下设备</h5>
                 <ul>
@@ -15,13 +14,9 @@
             </div>
         </nav>
         <div class="content is-shown">
-            <div class="titlebar">Elecadb</div>
+            <div class="title-bar">Elecadb</div>
             <div class="content-container">
-                <div class="toolbar">
-                    <mt-button size="small" @click="capture" :disabled="working">截图</mt-button>
-                    <mt-button size="small" @click="dowloadApk" :disabled="working">安装最新的APK</mt-button>
-                    <mt-button size="small" @click="startDebugActivity" :disabled="working">启动集成开发环境</mt-button>
-                </div>
+
 
                 <div id="download-box">
                     <span id="download-tip">正在下载APK....</span>
@@ -31,6 +26,11 @@
                 <div v-if="screencap">
                     <img id="screencap" v-on:contextmenu="saveScreencap" :src="screencap"/>
                 </div>
+            </div>
+            <div class="toolbar">
+                <button @click="capture" :disabled="working">截图</button>
+                <button @click="dowloadApk" :disabled="working">安装最新的APK</button>
+                <button @click="startDebugActivity" :disabled="working">启动集成开发环境</button>
             </div>
         </div>
     </div>
@@ -158,7 +158,38 @@
             ipc.on('devices', (event, devices) => {
                 this.devices = devices;
             });
+            $('.toolbar').addClass("is-shown");
         }
     }
 </script>
+
+<style lang="less">
+    .content {
+        position: relative;
+    }
+    .toolbar {
+        width: 100%;
+        padding: 5px 0;
+        background: grey;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+    }
+    #download-tip {
+        font-size: 1rem;
+    }
+    button {
+        background: #555;
+        border: 1px solid #444;
+        color: white;
+        outline: none;
+        font-size: .9rem;
+
+        &:disabled {
+            color: #666;
+        }
+
+        margin: .1rem .1rem;
+    }
+</style>
 
