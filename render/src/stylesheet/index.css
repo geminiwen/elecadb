@@ -75,20 +75,10 @@ li {
     border-radius: 5px;
 }
 
-.content {
-    text-align: center;
-}
+
 
 button {
     cursor:pointer;
 }
 
-.content-container {
-    padding: 1rem;
-}
 
-
-
-#download-box {
-    display: none;
-}
