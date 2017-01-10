@@ -20,9 +20,8 @@ function createWindow() {
     })
 
     // and load the index.html of the app.
-    var indexPath = process.env.NODE_ENV === 'development' ? '/render/index.html' : '/render/index.html'
     mainWindow.loadURL(url.format({
-        pathname: path.join(__dirname, indexPath),
+        pathname: path.join(__dirname, '/render/index.html'),
         protocol: 'file:',
         slashes: true
     }));

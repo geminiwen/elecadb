@@ -5,11 +5,14 @@ var path = require('path')
 var webpack = require('webpack')
 
 module.exports = {
-    entry: './render/src/scripts/index.js',
+    entry: {
+        main: './render/src/scripts/index.js',
+        settings: './render/src/scripts/settings.js'
+    },
     output: {
         path: path.resolve(__dirname, './render/dist'),
         publicPath: 'dist/',
-        filename: 'index.js'
+        filename: '[name].bundle.js'
     },
     target: 'electron-renderer',
     module: {
