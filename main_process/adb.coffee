@@ -2,11 +2,12 @@ Promise = require 'bluebird'
 fs = require 'fs'
 adb = require 'adbkit'
 client = adb.createClient()
-temp = require 'temp'
+temp = require('temp').track()
 debug = require('debug') 'adb'
 nativeImage = require('electron').nativeImage
 Progress = require 'progress-stream'
-request = require 'request'
+rp = require 'request-promise'
+request = require 'request-promise'
 unzip = require 'unzip'
 path = require 'path'
 
@@ -87,26 +88,28 @@ class ADB
             event.sender.send 'downloadApk', err
 
     _realDownloadApk: (dirPath, progress) =>
-        privateToken = 'VFuvYLhMUZgpp-sK_Ej6'
-        projectId = 15
+        privateToken = 'e57c604a832217df1880b3e214779378'
+        projectId = "57a85c08959d697f1500166e"
 
-        return new Promise (resolve, reject) ->
-            request.get
-                url: "http://10.0.10.211:9001/api/v3/projects/#{projectId}/builds/artifacts/develop/download?job=publish",
-                headers:
-                    'PRIVATE-TOKEN': privateToken
-            .on 'response', (res) ->
-                #TODO: deal with statusCode
-                if res.statusCode >= 400
-                    reject Error('download failed')
-                progress.setLength parseInt(res.headers['content-length'])
-            .on 'error', (err) ->
-                reject err
-            .pipe progress
-            .pipe unzip.Extract
-                path: dirPath
-            .on 'finish', ->
-                resolve path.join(dirPath, 'app/build/outputs/apk/app-official-rc.apk')
+        resultApkPath = path.join(dirPath, '_tmp.apk')
+        rp "http://api.fir.im/apps/#{projectId}/download_token?api_token=#{privateToken}"
+        .then (data) ->
+            data = JSON.parse data
+            data['download_token']
+        .then (token) ->
+            return new Promise (resolve, reject) ->
+                request "http://download.fir.im/apps/#{projectId}/install?download_token=#{token}"
+                .on 'response', (res) ->
+                    if res.statusCode >= 400
+                        reject Error('download failed')
+                    progress.setLength(parseInt(res.headers['content-length'] || 0))
+                .on 'error', (err) ->
+                    reject err
+                .pipe progress
+                .pipe fs.createWriteStream(resultApkPath)
+                .on 'finish', ->
+                    resolve resultApkPath
+
 
 
     installApk: (event, deviceId, path) =>
