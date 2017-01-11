@@ -17,13 +17,13 @@
             <div class="title-bar">Elecadb</div>
             <div class="content-container">
                 <el-screen class="tab-container show" />
-                <el-apk class="tab-container"/>
-
+                <el-apk class="tab-container" />
+                <el-launch class="tab-container" />
             </div>
             <div class="toolbar">
                 <button class="tab-btn" data-index="0" @click="switchTab">截图</button>
                 <button class="tab-btn" data-index="1" @click="switchTab">安装</button>
-                <button @click="startDebugActivity" >启动集成开发环境</button>
+                <button class="tab-btn" data-index="2" @click="switchTab">启动应用</button>
             </div>
         </div>
     </div>
@@ -35,6 +35,7 @@
     import {Progress, MessageBox, Indicator} from 'mint-ui'
     import Screen from './screen.vue'
     import Apk from './apk.vue'
+    import Launch from './launch.vue'
 
     export default {
         name: 'app',
@@ -47,6 +48,7 @@
         components: {
             'el-screen': Screen,
             'el-apk': Apk,
+            'el-launch': Launch
         },
         methods: {
             switchTab (event) {
