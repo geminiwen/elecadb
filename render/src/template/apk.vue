@@ -1,6 +1,6 @@
 <template xmlns:v-on="http://www.w3.org/1999/xhtml">
     <div>
-        <button id="download-btn" @click="dowloadApk">下载 & 安装 APK</button>
+        <button id="download-btn" @click="downloadApk">下载 & 安装 APK</button>
         <div id="download-box">
             <span id="download-tip">正在下载APK....</span>
             <mt-progress id="download-progress" :value="downloadProgress" :bar-height="10"></mt-progress>
@@ -12,10 +12,7 @@
     import {ipcRenderer as ipc} from 'electron'
     import * as $ from 'jquery'
     export default {
-        name: 'screen-cap',
-        props: {
-            screencap: String
-        },
+        name: 'apk',
         data() {
             return {
                 'downloadProgress': 0
