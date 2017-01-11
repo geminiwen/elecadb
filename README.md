@@ -1,5 +1,5 @@
-# 这是一个SegmentFault用的Android手机工具
+# 这是一个Android ADB工具
 
-1. 他目前没有太多的配置项，且只能在内网用
-2. 他能帮助测试人员安装最新的SegmentFault应用（测试版）
-3. 他能打开神秘异空间模式
+1. 可以截图
+2. 在设置页面填好`fir`的`projectId`和`personalToken`就可以直接从`fir`下载APK并安装到手机。
+3. 可以启动带特殊`Intent`的`Activity`（开发中）
