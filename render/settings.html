@@ -4,7 +4,7 @@
     <script type="text/javascript" src="./dist/settings.bundle.js"></script>
 </head>
 <body>
-<form>
+<div class="form">
     <h2>Fir API Information</h2>
     <div class="field">
         <input type="text" id="personal_token" placeholder="Person Token"/>
@@ -12,7 +12,10 @@
     <div class="field">
         <input type="text" id="project_id" placeholder="Project ID" />
     </div>
-</form>
+    <div class="field">
+        <button id="save">保存</button>
+    </div>
+</div>
 <script>
     require('electron-connect').client.create()
 </script>

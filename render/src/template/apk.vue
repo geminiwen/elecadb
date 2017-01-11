@@ -25,7 +25,7 @@
             'mt-progress': Progress,
         },
         methods: {
-            dowloadApk() {
+            downloadApk() {
                 let id = $('.device.selected').data('device')
                 if (!id) {
                     MessageBox('FBI Warning', '你没有选择设备或者设备没有连接好!')
@@ -37,13 +37,16 @@
 
                 ipc.send('request-downloadApk');
 
-
                 ipc.on('downloadApk', (event, err, subEvent, data) => {
                     if (err) {
                         $('#download-box').hide();
                         this.downloadProgress = 0;
                         ipc.removeAllListeners('downloadApk');
-                        MessageBox('FBI Warning', '下载失败,请检查网络')
+                        if (err == 'settings') {
+                            MessageBox('请先在设置页面填好 Fir API Token')
+                        } else {
+                            MessageBox('FBI Warning', '下载失败,请检查网络')
+                        }
                         return;
                     }
 
@@ -61,7 +64,6 @@
                             ipc.removeAllListeners('installApk');
                             Indicator.close();
                             $('#download-box').hide();
-                            this.working = false;
 
                             if (err) {
                                 MessageBox('FBI Warning', '安装失败');

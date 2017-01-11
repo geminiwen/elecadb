@@ -9,7 +9,9 @@ Progress = require 'progress-stream'
 rp = require 'request-promise'
 request = require 'request-promise'
 unzip = require 'unzip'
+Promise = require 'bluebird'
 path = require 'path'
+storage = require('electron-json-storage')
 
 parseDevices = (devices) ->
     Promise.map devices, (device) ->
@@ -88,17 +90,22 @@ class ADB
             event.sender.send 'downloadApk', err
 
     _realDownloadApk: (dirPath, progress) =>
-        privateToken = 'e57c604a832217df1880b3e214779378'
-        projectId = "57a85c08959d697f1500166e"
-
-        resultApkPath = path.join(dirPath, '_tmp.apk')
-        rp "http://api.fir.im/apps/#{projectId}/download_token?api_token=#{privateToken}"
+        project = null
+        getData = Promise.promisify(storage.get)
+        resultApkPath = path.join dirPath, "_tmp.apk"
+        getData("project")
+        .then (data) =>
+            project = data
+            if not project then return Promise.reject Error("settings")
+            url = "http://api.fir.im/apps/#{data.projectId}/download_token?api_token=#{data.personalToken}"
+            rp url
         .then (data) ->
+            console.log data
             data = JSON.parse data
             data['download_token']
         .then (token) ->
             return new Promise (resolve, reject) ->
-                request "http://download.fir.im/apps/#{projectId}/install?download_token=#{token}"
+                request "http://download.fir.im/apps/#{project.projectId}/install?download_token=#{token}"
                 .on 'response', (res) ->
                     if res.statusCode >= 400
                         reject Error('download failed')

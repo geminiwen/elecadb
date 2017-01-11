@@ -13,7 +13,7 @@ template = [{
             if settings then return
 
             settings = new BrowserWindow({
-                width: 300,
+                width: 400,
                 height: 200,
                 resizable: false,
                 title: 'Settings'
@@ -43,6 +43,12 @@ template = [{
         },
         {
             role: 'paste'
+        },
+        {
+            role: 'undo'
+        },
+        {
+            role: 'redo'
         }
     ]
 }

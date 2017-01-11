@@ -16,6 +16,7 @@
     "coffee-script": "^1.12.2",
     "debug": "^2.4.5",
     "electron": "^1.4.12",
+    "electron-json-storage": "^3.0.0",
     "jquery": "^3.1.1",
     "material-design-icons": "^3.0.1",
     "mint-ui": "^2.0.6",
