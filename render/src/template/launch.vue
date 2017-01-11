@@ -1,24 +1,43 @@
 <template>
     <div>
-        <div class="field"><input type="text" placeholder="Package Name/Component Name" /></div>
-        <div class="field"><input type="text" placeholder="Activity Name" /></div>
-        <div class="field col-container">
+        <div class="field"><input type="text" id="component" placeholder="Package Name/Component Name" /></div>
+        <div class="field"><input type="text" id="activity" placeholder="Activity Name" /></div>
+        <div class="field col-container" v-for="n in paramsCount">
             <div class="col-1">
-                <input type="text" placeholder="Key" />
+                <input type="text" class="param_key" placeholder="Key" />
             </div>
             <div class="col-1">
-                <input type="text" placeholder="Value" />
+                <input type="text" class="param_value" placeholder="Value" />
             </div>
         </div>
         <div class="field">
-            <button>增加一行</button>
-            <button>启动</button>
+            <button @click="addParam">增加一行</button>
+            <button @click="launch">启动</button>
         </div>
     </div>
 </template>
 <script>
     export default {
+        data: function () {
+            return {
+                paramsCount: 1
+            }
+        },
+        methods: {
+            addParam() {
+                if(this.paramsCount < 7) this.paramsCount ++;
+            },
+            launch() {
+                var component = $('#component').val()
+                var activity = $('#activity').val()
+                var params = {};
 
+                for (let i in this.paramsCount) {
+
+                }
+
+            }
+        }
     }
 </script>
 <style scoped>
