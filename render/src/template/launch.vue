@@ -9,6 +9,17 @@
             <div class="col-1">
                 <input type="text" class="param_value" placeholder="Value" />
             </div>
+            <div class="col-1">
+                <select class="param_type">
+                    <option value="string">string</option>
+                    <option value="int">int</option>
+                    <option value="long">long</option>
+                    <option value="float">float</option>
+                    <option value="bool">bool</option>
+                    <option value="uri">uri</option>
+                    <option value="null">null</option>
+                </select>
+            </div>
         </div>
         <div class="field">
             <button @click="addParam">增加一行</button>
@@ -17,6 +28,9 @@
     </div>
 </template>
 <script>
+    import * as $ from 'jQuery'
+    import {Progress, MessageBox, Indicator} from 'mint-ui'
+    import {ipcRenderer as ipc} from 'electron'
     export default {
         data: function () {
             return {
@@ -28,13 +42,35 @@
                 if(this.paramsCount < 7) this.paramsCount ++;
             },
             launch() {
-                var component = $('#component').val()
-                var activity = $('#activity').val()
-                var params = {};
-
-                for (let i in this.paramsCount) {
-
+                let id = $('.device.selected').data('device')
+                if (!id) {
+                    MessageBox('FBI Warning', '你没有选择设备或者设备没有连接好!')
+                    return;
                 }
+
+                let component = $('#component').val()
+                let activity = $('#activity').val()
+                let params = [];
+                let paramsContainer = $('.col-container');
+                for (let i = 0; i < this.paramsCount; i ++) {
+                    let key = $(paramsContainer[i]).find(".param_key").val().trim(),
+                        value = $(paramsContainer[i]).find(".param_value").val().trim(),
+                        type = $(paramsContainer[i]).find(".param_type").val();
+                    if (key == '') continue;
+                    params.push({key, value, type: type})
+                }
+
+
+                ipc.send('request-launch', id, component, activity, params);
+                Indicator.open();
+                ipc.on('launch', (event, err) => {
+                    ipc.removeAllListeners('launch');
+                    Indicator.close();
+                    if (err) {
+                        MessageBox('FBI Warning', '启动失败');
+                        return;
+                    }
+                })
 
             }
         }
@@ -49,6 +85,11 @@
         border-radius: 5px;
         border: 1px solid grey;
     }
+    select {
+        height: 30px;
+        width: 100%;
+    }
+
     .field {
         margin: 15px auto;
     }

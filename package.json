@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "DEBUG=* electron .",
-    "dev": "cross-env NODE_ENV=development gulp",
+    "dev": "cross-env NODE_ENV=development DEBUG=* gulp",
     "build": "cross-env NODE_ENV=production gulp webpack:build"
   },
   "author": "",

@@ -125,14 +125,10 @@ class ADB
             event.sender.send 'installApk'
         .catch (e) ->
             event.sender.send 'installApk', e
-    launch: (event, id) ->
+    launch: (event, id, component, activity, params) ->
         options = {
-            'component': 'com.segmentfault.app/com.segmentfault.app.activity.MainActivity',
-            'extras': [{
-                key: 'API_LEVEL'
-                type: 'int'
-                value: '1'
-            }]
+            'component': "#{component}/#{activity}",
+            'extras': params
         }
         client.startActivity id, options
         .then ->
