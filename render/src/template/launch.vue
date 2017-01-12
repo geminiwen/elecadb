@@ -119,4 +119,7 @@
         outline: none;
         border-radius: .2rem;
     }
+    select {
+        -webkit-appearance: menulist-button;
+    }
 </style>

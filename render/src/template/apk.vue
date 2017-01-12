@@ -36,11 +36,12 @@
 
                 ipc.on('downloadApk', (event, err, subEvent, data) => {
                     if (err) {
+                        console.dir(err);
                         $('#download-box').hide();
                         this.downloadProgress = 0;
                         ipc.removeAllListeners('downloadApk');
                         if (err == 'settings') {
-                            MessageBox('请先在设置页面填好 Fir API Token')
+                            MessageBox('字段空缺', '请先在设置页面填好 Fir API Token')
                         } else {
                             MessageBox('FBI Warning', '下载失败,请检查网络')
                         }

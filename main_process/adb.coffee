@@ -87,7 +87,7 @@ class ADB
         .catch (err) ->
             # error
             debug err
-            event.sender.send 'downloadApk', err
+            event.sender.send 'downloadApk', err.message
 
     _realDownloadApk: (dirPath, progress) =>
         project = null
@@ -96,11 +96,11 @@ class ADB
         getData("project")
         .then (data) =>
             project = data
-            if not project then return Promise.reject Error("settings")
+            if Object.keys(project).length == 0
+                return Promise.reject Error("settings")
             url = "http://api.fir.im/apps/#{data.projectId}/download_token?api_token=#{data.personalToken}"
             rp url
         .then (data) ->
-            console.log data
             data = JSON.parse data
             data['download_token']
         .then (token) ->

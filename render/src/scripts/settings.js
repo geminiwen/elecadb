@@ -5,20 +5,29 @@ const $ = require("jQuery")
 
 $(document).ready(function () {
     $('#save').click(() => {
+        let personalToken =  $('#personal_token').val().trim();
+        let projectId = $('#project_id').val().trim();
         let data = {
-            "personalToken" : $('#personal_token').val(),
-            "projectId" : $('#project_id').val()
+            "personalToken" : personalToken,
+            "projectId" : projectId
+        };
 
+        if (personalToken == '' && projectId == '') {
+            storage.remove("project", () => {
+                window.close();
+            })
+        } else {
+            storage.set("project", data, (err) => {
+                if (err) {
+                    alert("保存失败");
+                    return;
+                }
+                alert("保存成功");
+                window.close();
+            });
         }
 
-        storage.set("project", data, (err) => {
-            if (err) {
-                alert("保存失败");
-                return;
-            }
-            alert("保存成功");
-            window.close();
-        });
+
 
     });
 
