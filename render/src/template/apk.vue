@@ -1,10 +1,17 @@
 <template xmlns:v-on="http://www.w3.org/1999/xhtml">
     <div>
-        <button id="download-btn" @click="downloadApk">下载 & 安装 APK</button>
-        <div id="download-box">
-            <span id="download-tip">正在下载APK....</span>
-            <mt-progress id="download-progress" :value="downloadProgress" :bar-height="10"></mt-progress>
+    <div class="download_container">
+        <div class="download_inner">
+            <button id="download-btn" @click="downloadApk">下载 & 安装 APK</button>
+            <div id="download-box">
+                <span id="download-tip">正在下载APK....</span>
+                <mt-progress id="download-progress" :value="downloadProgress" :bar-height="10"></mt-progress>
+            </div>
         </div>
+        <div class="download_inner">
+            <div class="apk_container">Drop Your APK Here </div>
+        </div>
+    </div>
     </div>
 </template>
 <script>
@@ -77,7 +84,32 @@
 </script>
 
 
-<style scoped>
+<style scoped lang="less">
+    .download_container {
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+        height: 100%;
+    }
+
+    .apk_container {
+        height: 400px;
+        line-height: 400px;
+        font-size: 2rem;
+        color: #aaa;
+        border: 5px dashed #aaa;
+        border-radius: 5px;
+    }
+
+    .download_inner {
+        flex: 1;
+        padding: 10px;
+
+        &:first-child::after {
+            content: "OR"
+        }
+    }
+
     #download-btn {
         margin-bottom: 1rem;
     }
@@ -87,11 +119,10 @@
     }
 
     #download-box {
-        display: none;
     }
 
     button {
-         border: none;
+        border: none;
         color: white;
         background: #009A61;
         padding: 0 16px;

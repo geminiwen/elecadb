@@ -95,6 +95,10 @@
     }
     .tab-container {
         display: none;
+        position: absolute;
+        text-align: center;
+        width: calc(~'100% - 2rem');
+        height: calc(~'100% - 2rem');
     }
     .show {
         display: block;
@@ -109,6 +113,7 @@
     .content-container {
         padding: 1rem;
         flex: 1;
+        position: relative;
     }
 
     .toolbar > button {
